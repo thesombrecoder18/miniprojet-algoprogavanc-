@@ -26,7 +26,7 @@
 <a name="0"></a>
 ## 0. Vue d'ensemble du projet
 
-### 🧒 Version simple
+### Version simple
 
 Un **polynôme**, c'est une recette qui mélange une lettre mystère **X** avec des nombres.
 
@@ -42,12 +42,12 @@ Chaque petit bout (comme `2 * X^4`) s'appelle un **monôme**. Un monôme contien
 Le projet, c'est construire un programme qui sait **jouer avec les polynômes** comme une calculatrice joue avec les nombres : les lire, les afficher, les additionner, les multiplier, les diviser, calculer leur valeur quand X = 3 (par exemple).
 
 Il y a **deux mondes** dans ce projet :
-- 🌍 le monde du **texte** (ce que l'utilisateur tape : `"3*X^2 + 5"`)
-- 🌍 le monde de la **mémoire** (la façon dont le programme range ça pour calculer)
+- le monde du **texte** (ce que l'utilisateur tape : `"3*X^2 + 5"`)
+- le monde de la **mémoire** (la façon dont le programme range ça pour calculer)
 
 Tout le projet, c'est passer de l'un à l'autre et faire des opérations.
 
-### 🧑‍💻 Version technique
+### Version technique
 
 Le projet est découpé en **8 questions cumulatives** qui aboutissent à un programme C (puis Java) capable de :
 - Parser une chaîne représentant un polynôme à une variable selon une grammaire BNF donnée.
@@ -63,12 +63,12 @@ Chaque question **étend** la précédente — on ne réécrit pas, on enrichit.
 <a name="q1"></a>
 ## 1. Question 1 — Analyseur syntaxique
 
-### 🧒 Version simple
+### Version simple
 
 Un **analyseur syntaxique** = un correcteur d'orthographe pour polynômes.
 Tu lui donnes un texte, il te dit :
-- ✅ "C'est bien écrit"
-- ❌ "Erreur ici, j'attendais autre chose"
+- soit "C'est bien écrit"
+- soit "Erreur ici, j'attendais autre chose"
 
 Il **lit caractère par caractère**, comme un robot très patient qui a une liste de règles dans la tête.
 
@@ -85,12 +85,12 @@ Une **grammaire** = la liste des règles de bonne écriture. Comme la grammaire 
 | `nombre → naturel [.{chiffre}]` | Un entier ou un décimal. |
 | `chiffre → 0\|1\|2\|...\|9` | Un chiffre. |
 
-⚠️ **Attention** : les méta-symboles `[ ]`, `{ }`, `|` ne sont **pas** dans le polynôme. Ils décrivent juste la règle.
+**Attention** : les méta-symboles `[ ]`, `{ }`, `|` ne sont **pas** dans le polynôme. Ils décrivent juste la règle.
 - `[ ]` = facultatif
 - `{ }` = répétable (0, 1, ou plusieurs fois)
 - `|` = ou bien
 
-### 🧑‍💻 Version technique
+### Version technique
 
 #### Technique : descente récursive (recursive descent parser)
 
@@ -123,7 +123,7 @@ Correspondance grammaire → code :
 <a name="q2"></a>
 ## 2. Question 2 — Codage en mémoire
 
-### 🧒 Version simple
+### Version simple
 
 À la Q1, le programme **lit** mais **oublie tout**. Maintenant on veut qu'il **se souvienne** du polynôme pour pouvoir s'en servir.
 
@@ -136,7 +136,7 @@ tête → [coef=3, expo=2] → [coef=5, expo=1] → [coef=7, expo=0] → NULL
 
 Le polynôme nul (= zéro) → liste vide → `NULL`.
 
-### 🧑‍💻 Version technique
+### Version technique
 
 #### Structure de données
 
@@ -161,7 +161,7 @@ POINTEUR monome(void);
 
 Chaque fonction **alloue** des maillons (`malloc`) et **renvoie** l'adresse du début du bout reconnu.
 
-⚠️ **Règle stricte du sujet** : *"rien de ce qui constituait l'analyseur ne doit disparaître"*. On **étend** le code de la Q1, on ne le réécrit pas.
+**Règle stricte du sujet** : *"rien de ce qui constituait l'analyseur ne doit disparaître"*. On **étend** le code de la Q1, on ne le réécrit pas.
 
 #### Équivalent Java
 
@@ -179,7 +179,7 @@ En Java : pas de `malloc`, on fait `new Maillon()`. La liste vide est représent
 <a name="q3"></a>
 ## 3. Question 3 — Affichage
 
-### 🧒 Version simple
+### Version simple
 
 Une fonction qui prend une liste chaînée et l'**affiche** lisiblement.
 
@@ -190,7 +190,7 @@ Exemple : la liste `[(-4.5, 5), (2, 4), (1, 3), (-1, 1), (123, 0)]` devient :
 
 C'est la **Q1 à l'envers** : Q1 transforme du texte en mémoire ; Q3 transforme la mémoire en texte.
 
-### 🧑‍💻 Version technique
+### Version technique
 
 #### Cas particuliers à gérer pour un affichage propre
 
@@ -213,7 +213,7 @@ void affiche(POINTEUR p);
 <a name="q4"></a>
 ## 4. Question 4 — Tri par degré décroissant
 
-### 🧒 Version simple
+### Version simple
 
 Jusqu'ici, les monômes pouvaient être dans n'importe quel ordre. Maintenant on impose : **plus grand exposant en tête**, on descend ensuite.
 
@@ -221,7 +221,7 @@ Pourquoi ? Parce que :
 1. C'est la **convention math** standard.
 2. **Surtout** : ça facilitera énormément les opérations de la Q6 (parcours en parallèle de deux listes triées = "fermeture éclair").
 
-### 🧑‍💻 Version technique
+### Version technique
 
 On modifie l'**insertion** d'un nouveau maillon : insertion triée classique.
 
@@ -238,13 +238,13 @@ Si l'utilisateur tape `3*X^2 + 5*X^2`, on fusionne en `8*X^2` directement à l'i
 <a name="q5"></a>
 ## 5. Question 5 — Évaluation
 
-### 🧒 Version simple
+### Version simple
 
 "Pour ce polynôme P et cette valeur x, combien vaut P(x) ?"
 
 Exemple : `P = 2X² + 3X + 5` et `x = 4` → P(4) = 2×16 + 3×4 + 5 = **49**.
 
-### 🧑‍💻 Version technique
+### Version technique
 
 ```c
 double eval(POINTEUR p, double x);
@@ -265,19 +265,19 @@ renvoyer total
 <a name="q6"></a>
 ## 6. Question 6 — Opérations arithmétiques
 
-### 🧒 Version simple
+### Version simple
 
 On veut que le programme sache faire `P + Q`, `P - Q`, `P × Q` et `P ÷ Q` (avec reste).
 
 **Deux règles d'or** imposées par le sujet :
 
-🔑 **Règle 1** : On **ne touche JAMAIS** aux polynômes d'entrée. Le résultat est un polynôme **tout neuf** fait avec des maillons fraîchement alloués.
+**Règle 1** : On **ne touche JAMAIS** aux polynômes d'entrée. Le résultat est un polynôme **tout neuf** fait avec des maillons fraîchement alloués.
 
-🔑 **Règle 2** : On **ne libère RIEN**. Pas de `free` dans ces fonctions. C'est volontaire — on règlera la mémoire à la Q7.
+**Règle 2** : On **ne libère RIEN**. Pas de `free` dans ces fonctions. C'est volontaire — on règlera la mémoire à la Q7.
 
 Conséquence : le code de la Q6 sera **simple, court, fiable**, mais **gourmand** en mémoire. C'est exprès.
 
-### 🧑‍💻 Version technique
+### Version technique
 
 ```c
 POINTEUR plus    (POINTEUR a, POINTEUR b);
@@ -321,16 +321,16 @@ tant que degré(r) >= degré(b) :
 renvoyer q ; *reste = r
 ```
 
-⚠️ Vérifier `b ≠ NULL` (sinon division par zéro).
+**Attention** : vérifier `b ≠ NULL` (sinon division par zéro).
 
-⚠️ Le `*reste` (pointeur sur pointeur) est nécessaire car C ne peut renvoyer qu'**une** valeur. En **Java**, on s'en sortira différemment — voir [section C vs Java](#cjava).
+**Note** : le `*reste` (pointeur sur pointeur) est nécessaire car C ne peut renvoyer qu'**une** valeur. En **Java**, on s'en sortira différemment — voir [section C vs Java](#cjava).
 
 ---
 
 <a name="q7"></a>
 ## 7. Question 7 — Garbage collector
 
-### 🧒 Version simple
+### Version simple
 
 Le problème : à la Q6 on alloue tout le temps sans jamais libérer → la mémoire se remplit de **maillons fantômes** que plus personne n'utilise. À long terme, le programme grossit jusqu'à planter.
 
@@ -342,9 +342,9 @@ C'est l'algo classique **Mark & Sweep** :
 - **Mark** (marquer) : on pose un drapeau sur chaque maillon utile.
 - **Sweep** (balayer) : on parcourt **tous** les maillons existants. Ceux marqués → on garde (et on enlève le drapeau). Ceux non marqués → poubelle.
 
-🔑 **Règle d'or de la Q7** : ce mécanisme travaille **"en sous-sol"** — on ne touche **PAS** aux fonctions de la Q6. Le GC est un module ajouté par-dessus, invisible.
+**Règle d'or de la Q7** : ce mécanisme travaille **"en sous-sol"** — on ne touche **PAS** aux fonctions de la Q6. Le GC est un module ajouté par-dessus, invisible.
 
-### 🧑‍💻 Version technique
+### Version technique
 
 #### Ajouts à la structure
 
@@ -402,7 +402,7 @@ void recycler(void) {
     POINTEUR nouvelleTete = NULL;
     POINTEUR m = tousLesMaillons;
     while (m != NULL) {
-        POINTEUR suiv = m->general;   // ⚠️ sauvegarder AVANT free
+        POINTEUR suiv = m->general;   // sauvegarder AVANT free
         if (m->utile) {
             m->utile = 0;
             m->general = nouvelleTete;
@@ -424,7 +424,7 @@ En Java, le GC est **automatique** (intégré au langage). Mais le sujet demande
 <a name="q8"></a>
 ## 8. Question 8 — Versions récursives
 
-### 🧒 Version simple
+### Version simple
 
 Une fonction **récursive** = une fonction qui **s'appelle elle-même** sur un problème plus petit, jusqu'à arriver à un cas trivial qu'elle résout directement.
 
@@ -433,7 +433,7 @@ Pour `plus`, l'idée :
 
 C'est la **même logique** que la version itérative (boucle), mais le code **ressemble à la définition mathématique**.
 
-### 🧑‍💻 Version technique
+### Version technique
 
 ```c
 POINTEUR plus(POINTEUR a, POINTEUR b) {
@@ -455,7 +455,7 @@ POINTEUR plus(POINTEUR a, POINTEUR b) {
 
 `moins` : même structure, mais on nie les coefs venant de `b` et on calcule `a.coef - b.coef` quand les exposants coïncident.
 
-⚠️ Limitation théorique : un polynôme avec un million de monômes → débordement de pile. Pas un souci pour ce projet.
+**Limitation théorique** : un polynôme avec un million de monômes → débordement de pile. Pas un souci pour ce projet.
 
 ---
 
@@ -480,7 +480,7 @@ POINTEUR plus(POINTEUR a, POINTEUR b) {
 | C | Q6 (plus, moins, fois, quotient) | Q6 |
 | D | Q7 (GC) + tests d'intégration | Q7 (ou explication) + tests |
 
-⚠️ Tout le monde doit comprendre **tout** le code (présentation orale exigée).
+**Important** : tout le monde doit comprendre **tout** le code (présentation orale exigée).
 
 ### Fichier de tests partagé
 
@@ -505,44 +505,176 @@ Le prof a précisé **"travail authentique"**. Concrètement :
 <a name="cjava"></a>
 ## 10. Spécificités C vs Java
 
-### Ce qui change entre les deux versions
+### 10.0 Différences générales (valables partout)
 
 | Aspect | C | Java |
 |--------|---|------|
-| Structure du maillon | `struct` + `typedef` | classe `Maillon` |
+| Structure du maillon | `struct` + `typedef` | `static class Maillon` (nichée) |
 | Allocation | `malloc(sizeof(...))` | `new Maillon(...)` |
-| Pointeur sur pointeur (`quotient`) | `POINTEUR *reste` | objet wrapper ou tableau `Maillon[1]` ou retour d'objet `Resultat{q, r}` |
-| Liste vide | `NULL` | `null` |
-| Garbage collector | **À implémenter** (Q7) | **Intégré au langage** — discuter approche avec le prof |
-| Lecture caractère par caractère | `getchar()` ou index dans string | `Scanner`, `BufferedReader`, ou index dans `String` |
-| Affichage | `printf` | `System.out.print` |
+| Liste vide / pas de pointeur | `NULL` | `null` |
+| Test de chiffre | `isdigit(c)` (depuis `<ctype.h>`) | `Character.isDigit(c)` |
+| Lecture d'un caractère | `getchar()` (renvoie `int`, `EOF` à la fin) | `System.in.read()` (renvoie `int`, `-1` à la fin) |
+| Erreur fatale | `fprintf(stderr,...) ; exit(1)` | `System.err.println(...) ; System.exit(1)` |
+| Affichage | `printf` | `System.out.print` (+ `StringBuilder` pour les longues constructions) |
+| Format `%g` (sans `.0`) | natif via `printf("%g", d)` | il faut écrire un mini utilitaire `fmt(double)` |
 | `pow(x, n)` | `<math.h>` | `Math.pow(x, n)` |
-
-### Pour `quotient` en Java
-
-C ne peut renvoyer qu'une valeur → pointeur sur pointeur. Java a plusieurs options propres :
-
-**Option recommandée** : créer une classe résultat
-```java
-class DivisionResultat {
-    Maillon quotient;
-    Maillon reste;
-}
-DivisionResultat quotient(Maillon a, Maillon b) { ... }
-```
-
-### Pour le GC en Java
-
-Trois options, à arbitrer avec le prof :
-1. **Dire que c'est inutile** car Java le fait nativement (et l'expliquer dans le rapport).
-2. **Simuler** le mécanisme (liste `tousLesMaillons`, marquage…) à des fins pédagogiques, même si concrètement il est superflu.
-3. **Garder l'esprit** : implémenter la liste globale et le marquage, mais sans `free` (juste pour montrer la mécanique).
-
-L'option 2 est probablement la plus formatrice et la plus fidèle à l'esprit du sujet.
+| Exceptions I/O | implicites | doivent être déclarées : `throws IOException` |
+| Nom de fichier | libre | doit correspondre à la classe publique (`Analyseur.java`) |
+| Arguments du `main` | `int argc, char **argv` ; les vrais args commencent à `argv[1]` | `String[] args` ; les vrais args commencent à `args[0]` |
+| Conversion en double | `atof(argv[1])` | `Double.parseDouble(args[0])` |
 
 ---
 
-## ✅ Checklist finale avant rendu
+### 10.1 Q1 — Analyseur syntaxique
+
+| | C | Java |
+|---|---|---|
+| Lecture | `getchar()` | `System.in.read()` |
+| EOF | `EOF` | `-1` |
+| Test chiffre | `isdigit(car)` | `Character.isDigit(car)` |
+| Propagation des erreurs I/O | implicite | `throws IOException` sur **toutes** les méthodes qui lisent |
+
+Aucune autre différence structurelle : la descente récursive est identique dans les deux langages.
+
+---
+
+### 10.2 Q2 — Codage en mémoire
+
+| | C | Java |
+|---|---|---|
+| Type maillon | `typedef struct {...} MAILLON; typedef MAILLON *POINTEUR;` | `static class Maillon { ... }` |
+| Allocation | `malloc(sizeof(MAILLON))` | `new Maillon(coef, expo, suiv)` |
+| Constructeur | inexistant en C, on remplit les champs après | méthode dédiée `Maillon(...)` |
+| Polynôme nul | `NULL` | `null` |
+| `return` après `erreur()` | facultatif (compilateur muet) | **obligatoire** même si "inatteignable", sinon erreur de compilation |
+
+Java exige toujours un `return` même si la méthode appelle juste avant `erreur()` qui termine. C'est une particularité du compilateur Java qui ne sait pas que `System.exit(1)` ne revient jamais.
+
+---
+
+### 10.3 Q3 — Affichage
+
+| | C | Java |
+|---|---|---|
+| Construction de la chaîne | `printf` successifs directement | `StringBuilder` puis `print` final |
+| Format des doubles | `%g` (sans `.0` automatique) | `fmt()` utilitaire maison |
+
+En C, on imprime au fil de l'eau. En Java, comme les `String` sont **immutables**, on accumule dans un `StringBuilder` pour éviter d'allouer une nouvelle `String` à chaque concaténation. Le résultat visuel est identique.
+
+---
+
+### 10.4 Q4 — Tri par degré décroissant
+
+**Aucune différence d'algorithme.** L'`insererMaillon` récursive est portée à l'identique : `liste->expo` devient `liste.expo`, `m->coef` devient `m.coef`, c'est tout.
+
+Petite différence philosophique : en C, un maillon "absorbé" par fusion devient un fantôme jusqu'à la Q7. **En Java, le GC intégré le récupère automatiquement** dès qu'aucune référence ne le pointe plus.
+
+---
+
+### 10.5 Q5 — Évaluation
+
+| | C | Java |
+|---|---|---|
+| Lecture de l'argument | `argv[1]` | `args[0]` |
+| Vérif de présence | `if (argc >= 2)` | `if (args.length >= 1)` |
+| Conversion en double | `atof(argv[1])` | `Double.parseDouble(args[0])` |
+| `pow(x, n)` | boucle de multiplications (évite `<math.h>`) | identique, ou `Math.pow(x, n)` |
+
+Le décalage d'index dans `args` est le piège classique : en C, `argv[0]` est le nom du programme ; en Java, `args[0]` est déjà le **premier argument utilisateur**.
+
+---
+
+### 10.6 Q6 — Opérations arithmétiques
+
+| | C | Java |
+|---|---|---|
+| Signature de `quotient` | `quotient(a, b, POINTEUR *reste)` | `DivisionResultat quotient(a, b)` |
+| Renvoi de plusieurs valeurs | pointeur sur pointeur | classe résultat |
+| `ajouterEnQueue` | `void ajouterEnQueue(POINTEUR *tete, POINTEUR *queue, ...)` | classe interne `Constructeur` qui encapsule `tete` et `queue` |
+
+**Le grand changement de la Q6 entre les deux langages.** En C, on utilise des pointeurs sur pointeurs (`POINTEUR *`) pour modifier des variables externes. En Java, on **encapsule** ces variables dans un petit objet :
+
+```java
+// En C : pointeur sur pointeur
+void quotient(POINTEUR a, POINTEUR b, POINTEUR *reste);
+// utilisation
+POINTEUR r;
+POINTEUR q = quotient(a, b, &r);
+
+// En Java : classe résultat
+static class DivisionResultat { Maillon quotient; Maillon reste; }
+DivisionResultat quotient(Maillon a, Maillon b);
+// utilisation
+DivisionResultat dr = quotient(a, b);
+Maillon q = dr.quotient;
+Maillon r = dr.reste;
+```
+
+C'est plus lisible, plus typé, plus Java.
+
+Pour `ajouterEnQueue`, on fait pareil : on crée une mini-classe `Constructeur` qui contient `tete` et `queue` comme champs internes, et expose une méthode `ajouter(coef, expo)`.
+
+---
+
+### 10.7 Q7 — Garbage collector
+
+| | C | Java |
+|---|---|---|
+| Centralisation des allocations | fonction `nouveauMaillon` | **constructeur** `Maillon(...)` |
+| Effet "ajout à `tousLesMaillons`" | dans `nouveauMaillon` | dans le constructeur (effet de bord) |
+| Action sur les maillons non marqués | `free(m)` | `m.general = null` (détacher) |
+| Récupération réelle | immédiate via `free()` | différée par le GC intégré de la JVM |
+| Utilité pratique | indispensable | **purement pédagogique** |
+
+**La différence la plus importante de tout le projet.**
+
+En C, le GC est nécessaire : sans lui, les fuites mémoire sont réelles. En Java, le GC du langage fait déjà le travail. On implémente quand même le mécanisme parce que :
+1. Le sujet l'exige.
+2. C'est l'occasion de **démontrer qu'on comprend** l'algorithme mark-and-sweep, qui est précisément celui de la JVM.
+
+**Astuce Java** : on profite du fait que le constructeur de `Maillon` est appelé à **chaque** `new Maillon(...)`. On y ajoute l'effet de bord "rejoindre `tousLesMaillons`", et **toute la Q6 fonctionne sans modification**. C'est l'équivalent exact du C où on modifiait uniquement `nouveauMaillon`.
+
+```java
+Maillon(double coef, int expo, Maillon suivant) {
+    this.coef = coef;
+    this.expo = expo;
+    this.suivant = suivant;
+    this.utile = false;
+    // L'unique modification pour la Q7 :
+    this.general = tousLesMaillons;
+    tousLesMaillons = this;
+}
+```
+
+**Réponse à donner au prof** s'il demande pourquoi on simule un GC en Java :
+> *"Pour respecter le sujet et démontrer qu'on comprend l'algorithme mark-and-sweep, qui est exactement celui utilisé par certaines JVMs. En pratique dans un vrai projet Java, on laisserait le GC intégré faire son travail."*
+
+---
+
+### 10.8 Q8 — Versions récursives
+
+**Aucune différence structurelle.** Les fonctions `plusRec` et `moinsRec` se traduisent ligne à ligne entre C et Java. Les deux versions souffrent de la même **limitation théorique** : un polynôme à un million de monômes provoquerait un débordement de pile.
+
+---
+
+### Synthèse : où sont les vraies différences
+
+| Question | Différence | Importance |
+|----------|------------|-----------|
+| Q1 | I/O et exceptions | mineure |
+| Q2 | struct vs class | esthétique |
+| Q3 | `StringBuilder` au lieu de `printf` | mineure |
+| Q4 | aucune | — |
+| Q5 | index `args[0]` au lieu de `argv[1]` | mineure |
+| Q6 | classe `DivisionResultat` au lieu de `POINTEUR *reste` | **importante** |
+| Q7 | constructeur Java fait le boulot de `nouveauMaillon` ; pas de `free()` | **importante** |
+| Q8 | aucune | — |
+
+Les **vraies** différences se concentrent sur **Q6 et Q7**. Pour les autres questions, la traduction est essentiellement syntaxique.
+
+---
+
+## Checklist finale avant rendu
 
 - [ ] Q1–Q8 implémentées **en C**
 - [ ] Q1–Q8 implémentées **en Java**
